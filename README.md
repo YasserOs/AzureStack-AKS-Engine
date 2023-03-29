@@ -24,8 +24,8 @@ Lets go through the prerequisites on the operator part
 
 ### Tenant prerequisites
 - In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to match the version of the engine with version of the stack  
-| Azure Stack Hub Version   | AKS Engine Version  |
-| :------------- | :----------------- |
+| Azure Stack Hub Version   | AKS Engine Version  | 
+:------------- | :----------------- |
 | 2206 | 	0.70.0, 0.71.0, 0.73.0, 0.75.3* |
 
 
