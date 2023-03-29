@@ -8,7 +8,7 @@ In order to create a kubernetes cluster in Azure stack there are prerequisites t
 - The tenant ( Our customer )
 
 Lets go through the prerequisites on the operator part 
-### Operator Prequisites
+## Operator Prequisites
 - Azure Stack Hub subscription 
   - we need to set a subscription for the tenant on the stack
 - Azure Stack Hub 1910 or greater 
@@ -22,7 +22,7 @@ Lets go through the prerequisites on the operator part
 - Application Registeration
   - we need to register an application on the tenant's subscription and assign it's service principal a contributer role 
 
-### Tenant prerequisites
+## Tenant prerequisites
 - In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to match the version of the engine with version of the stack  
 
 | Azure Stack Hub Version   | AKS Engine Version  | 
