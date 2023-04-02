@@ -8,7 +8,7 @@ In order to create a kubernetes cluster in Azure stack there are prerequisites t
 - The tenant ( Our customer )
 
 Lets go through the prerequisites on the operator part 
-## Operator Prequisites
+### Operator Prequisites
 - Azure Stack Hub subscription 
   - we need to set a subscription for the tenant on the stack
 - Azure Stack Hub 1910 or greater 
@@ -22,13 +22,11 @@ Lets go through the prerequisites on the operator part
 - Application Registeration
   - we need to register an application on the tenant's subscription and assign it's service principal a contributer role 
 
-## Tenant prerequisites
+### Tenant prerequisites
 - In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to match the version of the engine with version of the stack  
-
 | Azure Stack Hub Version   | AKS Engine Version  | 
 :------------- | :----------------- |
 | 2206 | 	0.70.0, 0.71.0, 0.73.0, 0.75.3* |
-
 
 **NOTE : starting from version 0.75.3 and above all ```aks-engine``` commands should be replaced with ```aks-engine-azurestack```**
 
@@ -45,8 +43,11 @@ Lets go through the prerequisites on the operator part
 
 **NOTE: ** Starting from Kubernetes v1.24, ONLY the containerd container runtime is supported**
 - The engine can be installed on a [windows VM](https://learn.microsoft.com/en-us/azure-stack/user/azure-stack-kubernetes-aks-engine-deploy-windows?view=azs-2206)  or a [Linux VM](https://learn.microsoft.com/en-us/azure-stack/user/azure-stack-kubernetes-aks-engine-deploy-linux?view=azs-2206)
+
 -------------------
-### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
+## Preparing The Apimodel Json file for deployment
+
+#### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
 
 Here's an overview of the fields that can be found in the apimodel.json file
 ```{
@@ -133,7 +134,64 @@ properties : contains the main configuration settings for the Kubernetes cluster
 
 #### The values of this file can vary depending on the different requirements for the cluster , and this sample can provide u with a basic 1 master and workers setup for a kubernetes cluster to test things out and fine tune them if needed 
 
+#### This sample creates a subnet and a virtualnet for the cluster by itself , if you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this 
+```
+      "masterProfile": {
+            "dnsPrefix": "MOJTaqstgpeganew",
+            "distro": "aks-ubuntu-18.04",
+            "count": 3,
+            "vmSize": "Standard_F4s_v2",
+            "vnetSubnetId": "/subscriptions/9e9b6865-4533-443b-b922-6606793dc2cc/resourceGroups/kubernetesPreProd_RGroup/providers/Microsoft.Network/virtualNetworks/PreProd_Vnet/subnets/PreProd_Subnet",
+  "firstConsecutiveStaticIP": "10.141.144.100"
+        },
+        "agentPoolProfiles": [
+            {
+                "name": "linuxpool",
+                "count": 11,
+                "vmSize": "Standard_DS5_v2",
+                "distro": "aks-ubuntu-18.04",
+                "availabilityProfile": "AvailabilitySet",
+                "AcceleratedNetworkingEnabled": false,
+                "vnetSubnetId": "/subscriptions/9e9b6865-4533-443b-b922-6606793dc2cc/resourceGroups/kubernetesPreProd_RGroup/providers/Microsoft.Network/virtualNetworks/PreProd_Vnet/subnets/PreProd_Subnet"
+            }
+```
+
+the firstConsecutiveStaticIP field ib the masterProfile sets an ip for the master nodes in the subnet provided ( these ips will be static for the nodes and must not be taken )
+
+-------------------
+
 ## More information about the API model  
 - For a complete reference of all the available options in the API model, refer to the [Cluster definitions](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/clusterdefinitions.md).
 - For highlights on specific options for Azure Stack Hub, refer to the [Azure Stack Hub cluster definition specifics](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/azure-stack.md#cluster-definition-aka-api-model).
 
+----------------------
+## Deploying the cluster 
+After creating the Json file there's one more step left to deploy the cluster which is done by running this command 
+```
+aks-engine deploy \
+--azure-env AzureStackCloud \
+--location <for asdk is local> \
+--resource-group <name-of-resource-group> \
+--api-model <path-of-apimodel-json-file> \
+--output-directory <any-path-that-is-not-yet-created>\
+--client-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+--client-secret xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+--subscription-id xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+```
+- resource-group: Specifies the name of the Azure Resource Group where the Kubernetes cluster will be deployed. This is a required parameter.
+
+- api-model: the path of the apimodel.json file for the cluster
+
+- location: Specifies the Azure region where the Kubernetes cluster will be deployed.
+
+- output-directory: Specifies the directory where the deployment artifacts will be stored. This directory will contain the apimodel.json file, the generated ARM templates, and the deployment logs.
+
+- subscription-id: Specifies the ID of the Azure subscription to use for the deployment.
+
+- client-id: Specifies the Azure Active Directory (AAD) client ID to use for the deployment.
+
+- client-secret: Specifies the AAD client secret to use for the deployment.
+
+- force-overwrite: Forces the command to overwrite any existing deployment artifacts in the output directory.
+
+---------------------
