@@ -196,3 +196,62 @@ aks-engine deploy \
 - force-overwrite: Forces the command to overwrite any existing deployment artifacts in the output directory.
 
 ---------------------
+### For Clusters provisiond by specifiying a custom subet there are 2 steps to be done in order to get the cluster networking up and running :
+
+#### Step 1 :
+Associating the route table ( created by the aks engine for the inter-cluster networking ) to the subnet of the cluster , by heading into subnets in the portal and choosing the subnet then choosing the route table and associating to it 
+
+![subnet-association](https://user-images.githubusercontent.com/95745669/229350516-6983e449-367e-4937-8b9e-03898a6b3583.png)
+
+head to route tables in portal and choose the one created by the aks-engine and check the association 
+
+![route tabe](https://user-images.githubusercontent.com/95745669/229350596-d67d69c3-a5f7-4c20-ba6b-2c1f7cb5ff45.png)
+
+-----
+#### Step 2 :
+We need to create an inbound rule in the network security group of the cluster , and allow the source to be the cluster subnet ip ranges (e.g xxx.xxx.0.0/16) and the cluster pod subnet ip ranges ( can be found in the address prefix in the route table but the last 2 octets will be 0.0/16) 
+
+<img width="595" alt="Screenshot_7" src="https://user-images.githubusercontent.com/95745669/229350854-1cd3b91c-2172-47c0-b0bf-43979e58361d.png">
+ 
+and the destination of the rule to be also the pod-subnet-ip-ranges
+
+![MicrosoftTeams-image](https://user-images.githubusercontent.com/95745669/229350901-34cd9482-d9d2-41f1-bad2-5fda1e905a89.png)
+
+here the 10.244.0.0/16 is the pod-subnet-ip-ranges and the 192.167.0.0/16 is the cluster subnet ip ranges 
+
+-----------------
+
+### Verify Your cluster
+
+**1** Get the public IP address of one of your control plane nodes using the Azure Stack Hub portal.
+
+**2** connect via SSH into the new control plane node using a client such as PuTTY or just a regular bash shell.
+
+- For the SSH username, you use the username procided in the apimodel.json file in the linux/windows profile sections and the private key file of the key pair you provided for the deployment of the cluster.
+
+**3** Check that the cluster endpoints are running:
+```kubectl cluster-info
+```
+The output should look similar to the following:
+
+```Kubernetes master is running at https://democluster01.location.domain.com
+CoreDNS is running at https://democluster01.location.domain.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Metrics-server is running at https://democluster01.location.domain.com/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy
+```
+
+Then, review node states:
+
+```kubectl get nodes
+```
+
+The output should be similar to the following:
+
+```k8s-linuxpool-29969128-0   Ready      agent    9d    v1.15.5
+k8s-linuxpool-29969128-1   Ready      agent    9d    v1.15.5
+k8s-linuxpool-29969128-2   Ready      agent    9d    v1.15.5
+k8s-master-29969128-0      Ready      master   9d    v1.15.5
+k8s-master-29969128-1      Ready      master   9d    v1.15.5
+k8s-master-29969128-2      Ready      master   9d    v1.15.5
+```
+
+Now the Cluster is up and running you can start deploying your workloads , Happy Orchestrating !
