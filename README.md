@@ -230,18 +230,21 @@ here the 10.244.0.0/16 is the pod-subnet-ip-ranges and the 192.167.0.0/16 is the
 - For the SSH username, you use the username procided in the apimodel.json file in the linux/windows profile sections and the private key file of the key pair you provided for the deployment of the cluster.
 
 **3** Check that the cluster endpoints are running:
-```kubectl cluster-info
+```
+kubectl cluster-info
 ```
 The output should look similar to the following:
 
-```Kubernetes master is running at https://democluster01.location.domain.com
+```
+Kubernetes master is running at https://democluster01.location.domain.com
 CoreDNS is running at https://democluster01.location.domain.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 Metrics-server is running at https://democluster01.location.domain.com/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy
 ```
 
 Then, review node states:
 
-```kubectl get nodes
+```
+kubectl get nodes
 ```
 
 The output should be similar to the following:
