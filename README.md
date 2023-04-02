@@ -45,3 +45,95 @@ Lets go through the prerequisites on the operator part
 
 **NOTE: ** Starting from Kubernetes v1.24, ONLY the containerd container runtime is supported**
 - The engine can be installed on a [windows VM](https://learn.microsoft.com/en-us/azure-stack/user/azure-stack-kubernetes-aks-engine-deploy-windows?view=azs-2206)  or a [Linux VM](https://learn.microsoft.com/en-us/azure-stack/user/azure-stack-kubernetes-aks-engine-deploy-linux?view=azs-2206)
+-------------------
+### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
+
+Here's an overview of the fields that can be found in the apimodel.json file
+```{
+    "apiVersion": "vlabs",
+    "location": "",
+    "properties": {
+        "orchestratorProfile": {
+            "orchestratorType": "Kubernetes",
+            "orchestratorRelease": "1.20",
+            "orchestratorVersion": "1.20.6",
+            "kubernetesConfig": {
+                "cloudProviderBackoff": true,
+                "cloudProviderBackoffRetries": 1,
+                "cloudProviderBackoffDuration": 30,
+                "etcdDiskSizeGB": "30",
+                "cloudProviderRateLimit": true,
+                "cloudProviderRateLimitQPS": 100,
+                "cloudProviderRateLimitBucket": 150,
+                "cloudProviderRateLimitQPSWrite": 25,
+                "cloudProviderRateLimitBucketWrite": 30,
+                "useInstanceMetadata": false,
+                "networkPlugin": "kubenet",
+                "kubeletConfig": {
+                    "--node-status-update-frequency": "1m"
+                },
+                "controllerManagerConfig": {
+                    "--node-monitor-grace-period": "5m",
+                    "--pod-eviction-timeout": "5m",
+                    "--route-reconciliation-period": "1m"
+                }
+            }
+        },
+        "customCloudProfile": {
+            "portalURL": "https://portal.eg.linkdatacenter.net",
+            "identitySystem": ""
+        },
+        "featureFlags": {
+            "enableTelemetry": true
+        },
+        "masterProfile": {
+            "dnsPrefix": "newk8s",
+            "distro": "aks-ubuntu-18.04",
+            "count": 1,
+            "vmSize": "Standard_F2s_v2"
+        },
+        "agentPoolProfiles": [
+            {
+                "name": "linuxpool",
+                "count": 2,
+                "vmSize": "Standard_DS2_v2",
+                "distro": "aks-ubuntu-18.04",
+                "availabilityProfile": "AvailabilitySet",
+                "AcceleratedNetworkingEnabled": false
+            }
+        ],
+        "linuxProfile": {
+            "adminUsername": <VM-ADMIN-USERNAME>,
+            "ssh": {
+                "publicKeys": [
+                    {
+                        "keyData": <PUBLIC-SSH-KEY-DATA>
+                    }
+                ]
+            }
+        }
+    }
+}
+```
+
+#### We're going to explain the most important fields found in the file :  
+
+properties : contains the main configuration settings for the Kubernetes cluster. The properties object has several sub-objects that define various aspects of the cluster, including:
+
+- orchestratorProfile: An object that specifies the version and type of the Kubernetes orchestrator to use (e.g. Kubernetes 1.21.2) and a kubernetesConfig section that sepcifies additional configuration for the cluster like the etcdDiskSize in GB , the networking plgin (kubenet in this case) and other options.
+
+- customCloudProfile: An object that specifies the cloud provider configuration for the cluster, as the url of azure stack portal . 
+
+- masterProfile: An object that specifies the size and location of the Kubernetes master nodes.
+
+- agentPoolProfiles: An array of objects that specify the size , numebrand location of the Kubernetes worker nodes and other options.
+
+- linuxProfile: An object that specifies the settings for Linux nodes like the username and ssh-public key .
+
+
+#### The values of this file can vary depending on the different requirements for the cluster , and this sample can provide u with a basic 1 master and workers setup for a kubernetes cluster to test things out and fine tune them if needed 
+
+## More information about the API model  
+- For a complete reference of all the available options in the API model, refer to the [Cluster definitions](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/clusterdefinitions.md).
+- For highlights on specific options for Azure Stack Hub, refer to the [Azure Stack Hub cluster definition specifics](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/azure-stack.md#cluster-definition-aka-api-model).
+
