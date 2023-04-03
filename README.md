@@ -214,7 +214,7 @@ aks-engine deploy \
 - force-overwrite: Forces the command to overwrite any existing deployment artifacts in the output directory.
 
 ---------------------
-### Creating a kubernetes cluster using a custom subnet 
+## Custom Subnet creation
 For Clusters provisiond by specifiying a custom subnet there are 2 steps to be done in order to get the cluster networking up and running :
 
 #### Step 1 :
