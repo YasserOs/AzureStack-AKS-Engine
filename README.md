@@ -1,4 +1,5 @@
 # AzureStack-AKS-Engine
+AKS Engine is a command-line tool that automates the deployment of Kubernetes clusters on Azure Stack. With AKS Engine, you can customize the Kubernetes cluster deployment, including specifying the number of nodes, configuring network settings, and choosing the version of Kubernetes to deploy. This tool simplifies the process of deploying Kubernetes on Azure Stack and enables you to manage your Kubernetes clusters using familiar Azure tools and services.
 **NOTE :This documentation is based on the AZ-Stack Version 2206**
 
 In order to create a kubernetes cluster in Azure stack there are prerequisites that are divided between two entities :  
@@ -23,7 +24,7 @@ Lets go through the prerequisites on the operator part
   - we need to register an application on the tenant's subscription and assign it's service principal a contributer role 
 
 ### Tenant prerequisites
-- In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to match the version of the engine with version of the stack  
+- In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to map the version of the engine with version of the stack  
 
 | Azure Stack Hub Version   | AKS Engine Version  | 
 :------------- | :----------------- |
@@ -47,6 +48,21 @@ Lets go through the prerequisites on the operator part
 
 -------------------
 ## Preparing The Apimodel Json file for deployment
+#### We need to generate a private/public key pair in order to use it in our api-model file and to ssh into our nodes after deployment
+**1** Open a terminal or command prompt on your local machine / the client VM.
+
+**2** Type the following command: 
+```
+ssh-keygen -t rsa.
+```
+**3** You will be prompted to enter a file name for the key pair. You can leave the default name or specify a custom name.
+
+**4** You will be prompted to enter a passphrase for the key pair. This is optional, but it is recommended for added security. If you choose to use a passphrase, make sure it is something you can remember, as you will need to enter it every time you use the key pair.
+
+**5** The tool will generate a public key and a private key. The public key will have the same file name as the private key, but with a .pub extension. The private key should be kept secret and not shared with anyone.
+
+**6** Copy the public key to the remote server where you want to use it. You can do this by using the ssh-copy-id command, or by manually copying the contents of the public key file and pasting it into the appropriate file on the remote server.
+
 
 #### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
 
@@ -138,7 +154,7 @@ properties : contains the main configuration settings for the Kubernetes cluster
 #### This sample creates a subnet and a virtualnet for the cluster by itself , if you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this 
 ```
       "masterProfile": {
-            "dnsPrefix": "MOJTaqstgpeganew",
+            "dnsPrefix": "newk8s",
             "distro": "aks-ubuntu-18.04",
             "count": 3,
             "vmSize": "Standard_F4s_v2",
@@ -196,7 +212,8 @@ aks-engine deploy \
 - force-overwrite: Forces the command to overwrite any existing deployment artifacts in the output directory.
 
 ---------------------
-### For Clusters provisiond by specifiying a custom subet there are 2 steps to be done in order to get the cluster networking up and running :
+### Creating a kubernetes cluster using a custom subnet 
+For Clusters provisiond by specifiying a custom subnet there are 2 steps to be done in order to get the cluster networking up and running :
 
 #### Step 1 :
 Associating the route table ( created by the aks engine for the inter-cluster networking ) to the subnet of the cluster , by heading into subnets in the portal and choosing the subnet then choosing the route table and associating to it 
