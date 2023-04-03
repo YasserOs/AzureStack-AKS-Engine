@@ -49,19 +49,19 @@ Lets go through the prerequisites on the operator part
 -------------------
 ## Preparing The Apimodel Json file for deployment
 #### We need to generate a private/public key pair in order to use it in our api-model file and to ssh into our nodes after deployment
-**1** Open a terminal or command prompt on your local machine / the client VM.
+**1**- Open a terminal or command prompt on your local machine / the client VM.
 
-**2** Type the following command: 
+**2**- Type the following command: 
 ```
 ssh-keygen -t rsa.
 ```
-**3** You will be prompted to enter a file name for the key pair. You can leave the default name or specify a custom name.
+**3**- You will be prompted to enter a file name for the key pair. You can leave the default name or specify a custom name.
 
-**4** You will be prompted to enter a passphrase for the key pair. This is optional, but it is recommended for added security. If you choose to use a passphrase, make sure it is something you can remember, as you will need to enter it every time you use the key pair.
+**4**- You will be prompted to enter a passphrase for the key pair. This is optional, but it is recommended for added security. If you choose to use a passphrase, make sure it is something you can remember, as you will need to enter it every time you use the key pair.
 
-**5** The tool will generate a public key and a private key. The public key will have the same file name as the private key, but with a .pub extension. The private key should be kept secret and not shared with anyone.
+**5**- The tool will generate a public key and a private key. The public key will have the same file name as the private key, but with a .pub extension. The private key should be kept secret and not shared with anyone.
 
-**6** Copy the public key to the remote server where you want to use it. You can do this by using the ssh-copy-id command, or by manually copying the contents of the public key file and pasting it into the appropriate file on the remote server.
+**6**- Copy the public key to the remote server where you want to use it. You can do this by using the ssh-copy-id command, or by manually copying the contents of the public key file and pasting it into the appropriate file on the remote server.
 
 
 #### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
