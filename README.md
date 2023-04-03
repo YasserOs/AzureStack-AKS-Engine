@@ -48,7 +48,7 @@ Lets go through the prerequisites on the operator part
 
 -------------------
 ## Preparing The Apimodel Json file for deployment
-#### We need to generate a private/public key pair in order to use it in our api-model file and to ssh into our nodes after deployment
+### We need to generate a private/public key pair in order to use it in our api-model file and to ssh into our nodes after deployment
 **1**- Open a terminal or command prompt on your local machine / the client VM.
 
 **2**- Type the following command: 
@@ -64,7 +64,7 @@ ssh-keygen -t rsa.
 **6**- Copy the public key to the remote server where you want to use it. You can do this by using the ssh-copy-id command, or by manually copying the contents of the public key file and pasting it into the appropriate file on the remote server.
 
 
-#### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
+### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
 
 Here's an overview of the fields that can be found in the apimodel.json file
 ```{
