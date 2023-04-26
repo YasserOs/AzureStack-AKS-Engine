@@ -22,6 +22,8 @@ Lets go through the prerequisites on the operator part
 
 - Application Registeration
   - we need to register an application on the tenant's subscription and assign it's service principal a contributer role 
+  
+![b0f91bf9-b7ff-462a-bc33-bbf431da839b](https://user-images.githubusercontent.com/95745669/234536742-6485a38b-5b73-46e8-9de2-55b8d80adb1e.jpg)
 
 ### Tenant prerequisites
 - In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to map the version of the engine with version of the stack  
