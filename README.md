@@ -237,7 +237,8 @@ We need to create an inbound rule in the network security group of the cluster ,
  
 and the destination of the rule to be also the pod-subnet-ip-ranges
 
-![MicrosoftTeams-image](https://user-images.githubusercontent.com/95745669/229350901-34cd9482-d9d2-41f1-bad2-5fda1e905a89.png)
+![85381d2e-de8c-4298-a902-98f1411e13be](https://user-images.githubusercontent.com/95745669/234575423-9493de7e-8b60-47d9-a479-40e9e88f4525.jpg)
+
 
 here the 10.244.0.0/16 is the pod-subnet-ip-ranges and the 192.167.0.0/16 is the cluster subnet ip ranges 
 
