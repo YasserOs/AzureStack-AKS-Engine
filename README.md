@@ -61,9 +61,9 @@ Lets go through the prerequisites on the operator part
 --------------------------------
 ### Step 2-**Contributer Role Assignment**
 
-    - Give role contributer for the app we created on azure public on the subscription
+  - Give role contributer for the app we created on azure public on the subscription
 
-      ![8a6b04cc-5a30-4f56-8e2e-f15c1d4cff61](https://user-images.githubusercontent.com/95745669/234553749-246ff4bb-e5bf-4808-9b3d-f48718c94a67.jpg)
+    ![8a6b04cc-5a30-4f56-8e2e-f15c1d4cff61](https://user-images.githubusercontent.com/95745669/234553749-246ff4bb-e5bf-4808-9b3d-f48718c94a67.jpg)
 
 -------------------------------
 ### Step 3-**AKS Engine Deployment**
