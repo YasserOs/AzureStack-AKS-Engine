@@ -23,7 +23,7 @@ Lets go through the prerequisites on the operator part
 - Application Registeration
   - we need to register an application on the tenant's subscription and assign it's service principal a contributer role 
   
-  - 1st login into the public url of azure's portal [Azure](portal.azure.com)
+  - login into the public url of azure's portal [Azure](portal.azure.com)
   
   - then go into app registeration
  
@@ -43,7 +43,7 @@ Lets go through the prerequisites on the operator part
 
       ![84b965d1-d920-4d17-9e85-4f3b40d9f8a4](https://user-images.githubusercontent.com/95745669/234548737-19a7ac14-24e2-4064-b8b4-7b69a48ffe51.jpg)
 
-    - login to the azure stack portal url , and go to subscriptions and choose your own 
+    - login to the azure stack portal url [Azure Stack](portal.eg2.linkdatacenter.net) , and go to subscriptions and choose your own 
 
       ![b3643bd3-5217-47ff-aea4-4c5f4932fb0a](https://user-images.githubusercontent.com/95745669/234553311-cdc4ddf3-aad6-4efe-919c-99bbd967defd.jpg)
 
