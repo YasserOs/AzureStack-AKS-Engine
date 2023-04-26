@@ -116,7 +116,7 @@ ssh-keygen -t rsa.
 **6**- Copy the public key to the remote server where you want to use it. You can do this by using the ssh-copy-id command, or by manually copying the contents of the public key file and pasting it into the appropriate file on the remote server.
 
 ------------------------------
-### STEP5- **Preparing The Apimodel Json file for deployment**
+### STEP5 - **Preparing The Apimodel Json file for deployment**
 
 #### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
 
