@@ -19,31 +19,40 @@ Lets go through the prerequisites on the operator part
   - AKS Base Ubuntu and Windows Image for the cluster machines , can be downloaded from the marketplace of the stac
 - Linux custom script extension
   - Custom Script for Linux 2.0 Version: 2.0.6 (or latest version) , can be downloaded from the marketplace of the stack
-
+### Tenant's Prerequisites 1
 - Application Registeration
   - we need to register an application on the tenant's subscription and assign it's service principal a contributer role 
   
-  1st we need to login into the public url of azure's portal [Azure](portal.azure.com)
+  - 1st login into the public url of azure's portal [Azure](portal.azure.com)
   
-  then go into app registeration
+  - then go into app registeration
  
-  ![b0f91bf9-b7ff-462a-bc33-bbf431da839b](https://user-images.githubusercontent.com/95745669/234536742-6485a38b-5b73-46e8-9de2-55b8d80adb1e.jpg)
+    ![b0f91bf9-b7ff-462a-bc33-bbf431da839b](https://user-images.githubusercontent.com/95745669/234536742-6485a38b-5b73-46e8-9de2-55b8d80adb1e.jpg)
   
-  Register a new app
+ -  Register a new app
   
-  ![0206b970-94eb-4725-aa42-aef5af738e96](https://user-images.githubusercontent.com/95745669/234537074-1112de53-48cf-492e-834c-06a028de7b52.jpg)
+    ![0206b970-94eb-4725-aa42-aef5af738e96](https://user-images.githubusercontent.com/95745669/234537074-1112de53-48cf-492e-834c-06a028de7b52.jpg)
   
-  ![8f411d0d-71c2-4280-af4c-48ab0daecf97](https://user-images.githubusercontent.com/95745669/234537155-1d6f41f5-3b61-4f89-93e5-c113ddfe66b3.jpg)
+    ![8f411d0d-71c2-4280-af4c-48ab0daecf97](https://user-images.githubusercontent.com/95745669/234537155-1d6f41f5-3b61-4f89-93e5-c113ddfe66b3.jpg)
   
   - After creating the app ( example here : kubernetes) , we want to copy the Application (client) ID and the Directory(tenant) ID to use it on the AKS json file where we are creating the cluster
   
-  ![1f376c2b-8599-46f0-b63d-cd6d1e6de294](https://user-images.githubusercontent.com/95745669/234544391-99b2e6d5-c1c3-464c-a1a7-1d66e8eab501.jpg)
+    ![1f376c2b-8599-46f0-b63d-cd6d1e6de294](https://user-images.githubusercontent.com/95745669/234544391-99b2e6d5-c1c3-464c-a1a7-1d66e8eab501.jpg)
 
-  - 
+  - We need to create a secret for the app to use on the Json file too , save the value after creating the secret as it will be hashed after couple of mins
+  
+    ![84b965d1-d920-4d17-9e85-4f3b40d9f8a4](https://user-images.githubusercontent.com/95745669/234548737-19a7ac14-24e2-4064-b8b4-7b69a48ffe51.jpg)
+
+  - login to the azure stack portal url , and go to subscriptions and choose your own 
+  
+    ![b3643bd3-5217-47ff-aea4-4c5f4932fb0a](https://user-images.githubusercontent.com/95745669/234553311-cdc4ddf3-aad6-4efe-919c-99bbd967defd.jpg)
+
+  - Give role contributer for the app we created on azure public on the subscription
+    
+    ![8a6b04cc-5a30-4f56-8e2e-f15c1d4cff61](https://user-images.githubusercontent.com/95745669/234553749-246ff4bb-e5bf-4808-9b3d-f48718c94a67.jpg)
 
 
-
-### Tenant prerequisites
+### Tenant prerequisites 2
 - In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to map the version of the engine with version of the stack  
 
 | Azure Stack Hub Version   | AKS Engine Version  | 
