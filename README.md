@@ -209,7 +209,6 @@ properties : contains the main configuration settings for the Kubernetes cluster
 
 ### More information about the API model  
 - For a complete reference of all the available options in the API model, refer to the [Cluster definitions](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/clusterdefinitions.md).
-- 
 ----------------------
 ## (OPTIONAL) Step 6-**Custom Subnet creation**
 #### If you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this (you can get the value by going into the desired subnet from the portal then copying the path starting from "/subscriptions/..." like the example
