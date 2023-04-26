@@ -104,8 +104,8 @@ Here's an overview of the fields that can be found in the apimodel.json file
     "properties": {
         "orchestratorProfile": {
             "orchestratorType": "Kubernetes",
-            "orchestratorRelease": "1.20",
-            "orchestratorVersion": "1.20.6",
+            "orchestratorRelease": "1.21",
+            "orchestratorVersion": "1.21.10",
             "kubernetesConfig": {
                 "cloudProviderBackoff": true,
                 "cloudProviderBackoffRetries": 1,
@@ -129,14 +129,14 @@ Here's an overview of the fields that can be found in the apimodel.json file
             }
         },
         "customCloudProfile": {
-            "portalURL": "https://portal.eg.linkdatacenter.net",
+            "portalURL": "https://portal.eg2.linkdatacenter.net",
             "identitySystem": ""
         },
         "featureFlags": {
             "enableTelemetry": true
         },
         "masterProfile": {
-            "dnsPrefix": "newk8s",
+            "dnsPrefix": <UNIQUE_DOMAIN_NAME>,
             "distro": "aks-ubuntu-18.04",
             "count": 1,
             "vmSize": "Standard_F2s_v2"
@@ -185,7 +185,7 @@ properties : contains the main configuration settings for the Kubernetes cluster
 #### This sample creates a subnet and a virtualnet for the cluster by itself , if you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this 
 ```
       "masterProfile": {
-            "dnsPrefix": "newk8s",
+            "dnsPrefix": <UNIQUE_DOMAIN_NAME>,
             "distro": "aks-ubuntu-18.04",
             "count": 3,
             "vmSize": "Standard_F4s_v2",
