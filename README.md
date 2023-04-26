@@ -1,11 +1,6 @@
 ![cbb45f76-6fbd-4e90-9420-a7b195f22571](https://user-images.githubusercontent.com/95745669/234577584-41bf583e-0fa6-4d55-a1f2-decbe22a6348.jpg)
 
 
-
-
-
-
-
 # AzureStack-AKS-Engine
 AKS Engine is a command-line tool that automates the deployment of Kubernetes clusters on Azure Stack. With AKS Engine, you can customize the Kubernetes cluster deployment, including specifying the number of nodes, configuring network settings, and choosing the version of Kubernetes to deploy. This tool simplifies the process of deploying Kubernetes on Azure Stack and enables you to manage your Kubernetes clusters using familiar Azure tools and services.
 **NOTE :This documentation is based on the AZ-Stack Version 2206**
