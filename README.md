@@ -73,7 +73,11 @@ Lets go through the prerequisites on the operator part
 **NOTE: * Starting from Kubernetes v1.21, only Cloud Provider for Azure is supported on Azure Stack Hub**
 
 **NOTE: ** Starting from Kubernetes v1.24, ONLY the containerd container runtime is supported**
+
+[Official documentation of versions mappings](https://learn.microsoft.com/en-us/azure-stack/user/kubernetes-aks-engine-release-notes?view=azs-2206#aks-engine-and-azure-stack-version-mapping)
+
 - The engine can be installed on a [windows VM](https://learn.microsoft.com/en-us/azure-stack/user/azure-stack-kubernetes-aks-engine-deploy-windows?view=azs-2206)  or a [Linux VM](https://learn.microsoft.com/en-us/azure-stack/user/azure-stack-kubernetes-aks-engine-deploy-linux?view=azs-2206)
+
 
 -------------------
 ## Preparing The Apimodel Json file for deployment
@@ -182,7 +186,15 @@ properties : contains the main configuration settings for the Kubernetes cluster
 
 #### The values of this file can vary depending on the different requirements for the cluster , and this sample can provide u with a basic 1 master and workers setup for a kubernetes cluster to test things out and fine tune them if needed 
 
-#### This sample creates a subnet and a virtualnet for the cluster by itself , if you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this 
+-------------------
+
+## More information about the API model  
+- For a complete reference of all the available options in the API model, refer to the [Cluster definitions](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/clusterdefinitions.md).
+- For highlights on specific options for Azure Stack Hub, refer to the [Azure Stack Hub cluster definition specifics](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/azure-stack.md#cluster-definition-aka-api-model).
+
+----------------------
+## (OPTIONAL) Custom Subnet creation
+#### If you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this (you can get the value by going into the desired subnet from the portal then copying the path starting from "/subscriptions/..." like the example
 ```
       "masterProfile": {
             "dnsPrefix": <UNIQUE_DOMAIN_NAME>,
@@ -206,11 +218,29 @@ properties : contains the main configuration settings for the Kubernetes cluster
 
 the firstConsecutiveStaticIP field ib the masterProfile sets an ip for the master nodes in the subnet provided ( these ips will be static for the nodes and must not be taken )
 
--------------------
+For Clusters provisiond by specifiying a custom subnet there are 2 steps to be done in order to get the cluster networking up and running :
 
-## More information about the API model  
-- For a complete reference of all the available options in the API model, refer to the [Cluster definitions](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/clusterdefinitions.md).
-- For highlights on specific options for Azure Stack Hub, refer to the [Azure Stack Hub cluster definition specifics](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/azure-stack.md#cluster-definition-aka-api-model).
+#### Step 1 :
+Associating the route table ( created by the aks engine for the inter-cluster networking ) to the subnet of the cluster , by heading into subnets in the portal and choosing the subnet then choosing the route table and associating to it 
+
+![subnet-association](https://user-images.githubusercontent.com/95745669/229350516-6983e449-367e-4937-8b9e-03898a6b3583.png)
+
+head to route tables in portal and choose the one created by the aks-engine and check the association 
+
+![route tabe](https://user-images.githubusercontent.com/95745669/229350596-d67d69c3-a5f7-4c20-ba6b-2c1f7cb5ff45.png)
+
+-----
+#### Step 2 :
+We need to create an inbound rule in the network security group of the cluster , and allow the source to be the cluster subnet ip ranges (e.g xxx.xxx.0.0/16) and the cluster pod subnet ip ranges ( can be found in the address prefix in the route table but the last 2 octets will be 0.0/16) 
+
+<img width="595" alt="Screenshot_7" src="https://user-images.githubusercontent.com/95745669/229350854-1cd3b91c-2172-47c0-b0bf-43979e58361d.png">
+ 
+and the destination of the rule to be also the pod-subnet-ip-ranges
+
+![MicrosoftTeams-image](https://user-images.githubusercontent.com/95745669/229350901-34cd9482-d9d2-41f1-bad2-5fda1e905a89.png)
+
+here the 10.244.0.0/16 is the pod-subnet-ip-ranges and the 192.167.0.0/16 is the cluster subnet ip ranges 
+
 
 ----------------------
 ## Deploying the cluster 
@@ -243,31 +273,6 @@ aks-engine deploy \
 - force-overwrite: Forces the command to overwrite any existing deployment artifacts in the output directory.
 
 ---------------------
-## Custom Subnet creation
-For Clusters provisiond by specifiying a custom subnet there are 2 steps to be done in order to get the cluster networking up and running :
-
-#### Step 1 :
-Associating the route table ( created by the aks engine for the inter-cluster networking ) to the subnet of the cluster , by heading into subnets in the portal and choosing the subnet then choosing the route table and associating to it 
-
-![subnet-association](https://user-images.githubusercontent.com/95745669/229350516-6983e449-367e-4937-8b9e-03898a6b3583.png)
-
-head to route tables in portal and choose the one created by the aks-engine and check the association 
-
-![route tabe](https://user-images.githubusercontent.com/95745669/229350596-d67d69c3-a5f7-4c20-ba6b-2c1f7cb5ff45.png)
-
------
-#### Step 2 :
-We need to create an inbound rule in the network security group of the cluster , and allow the source to be the cluster subnet ip ranges (e.g xxx.xxx.0.0/16) and the cluster pod subnet ip ranges ( can be found in the address prefix in the route table but the last 2 octets will be 0.0/16) 
-
-<img width="595" alt="Screenshot_7" src="https://user-images.githubusercontent.com/95745669/229350854-1cd3b91c-2172-47c0-b0bf-43979e58361d.png">
- 
-and the destination of the rule to be also the pod-subnet-ip-ranges
-
-![MicrosoftTeams-image](https://user-images.githubusercontent.com/95745669/229350901-34cd9482-d9d2-41f1-bad2-5fda1e905a89.png)
-
-here the 10.244.0.0/16 is the pod-subnet-ip-ranges and the 192.167.0.0/16 is the cluster subnet ip ranges 
-
------------------
 
 ### Verify Your cluster
 
