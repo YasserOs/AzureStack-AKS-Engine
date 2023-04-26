@@ -25,7 +25,7 @@ Lets go through the prerequisites on the operator part
 -------------------------
 ## Customer's Prerequisites 
 -------------------------
-### STEP 1- **Application Registeration** 
+### Step 1-**Application Registeration** 
 
   - we need to register an application on the customer's subscription and assign it's service principal a contributer role 
   
@@ -54,14 +54,14 @@ Lets go through the prerequisites on the operator part
     ![b3643bd3-5217-47ff-aea4-4c5f4932fb0a](https://user-images.githubusercontent.com/95745669/234553311-cdc4ddf3-aad6-4efe-919c-99bbd967defd.jpg)
     
 --------------------------------
-### STEP 2- **Contributer Role Assignment**
+### Step 2-**Contributer Role Assignment**
 
     - Give role contributer for the app we created on azure public on the subscription
 
       ![8a6b04cc-5a30-4f56-8e2e-f15c1d4cff61](https://user-images.githubusercontent.com/95745669/234553749-246ff4bb-e5bf-4808-9b3d-f48718c94a67.jpg)
 
 -------------------------------
-### STEP 3- **AKS Engine Deployment**
+### Step 3-**AKS Engine Deployment**
 
   - In order to deploy a kubernetes cluster we need to install the AKS engine on a virtual machine and use the engine to deploy the cluster , but we need to map the version of the engine with version of the stack  
 
@@ -98,7 +98,7 @@ Lets go through the prerequisites on the operator part
 
 
 -------------------
-### STEP4- **Generating SSH Keys**
+### Step 4-**Generating SSH Keys**
 
 #### We need to generate a private/public key pair in order to use it in our api-model file and to ssh into our nodes after deployment
 **1**- Open a terminal or command prompt on your local machine / the client VM.
@@ -116,7 +116,7 @@ ssh-keygen -t rsa.
 **6**- Copy the public key to the remote server where you want to use it. You can do this by using the ssh-copy-id command, or by manually copying the contents of the public key file and pasting it into the appropriate file on the remote server.
 
 ------------------------------
-### STEP5 - **Preparing The Apimodel Json file for deployment**
+### Step 5-**Preparing The Apimodel Json file for deployment**
 
 #### After Installing the AKS engine on the client VM we need to create a json file normally called "apimodel" , this file is used by AKS Engine to define the desired state of a Kubernetes cluster that will be deployed on Azure Stack. It contains a set of fields that define various aspects of the cluster, such as its size, location, and configuration. 
 
@@ -211,7 +211,7 @@ properties : contains the main configuration settings for the Kubernetes cluster
 - For a complete reference of all the available options in the API model, refer to the [Cluster definitions](https://github.com/Azure/aks-engine-azurestack/blob/master/docs/topics/clusterdefinitions.md).
 - 
 ----------------------
-## (OPTIONAL) STEP6- **Custom Subnet creation**
+## (OPTIONAL) Step 6-**Custom Subnet creation**
 #### If you want to deploy to a custom subnet we add a 'vnetSubnetId' field to both of the master and agent pool profiles like this (you can get the value by going into the desired subnet from the portal then copying the path starting from "/subscriptions/..." like the example
 ```
       "masterProfile": {
@@ -262,7 +262,7 @@ here the 10.244.0.0/16 is the pod-subnet-ip-ranges and the 192.167.0.0/16 is the
 
 
 ----------------------
-## STEP 7- **Deploying the cluster** 
+## Step 7-**Deploying the cluster** 
 After creating the Json file there's one more step left to deploy the cluster which is done by running this command 
 ```
 aks-engine deploy \
